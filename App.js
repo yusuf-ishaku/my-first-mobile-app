@@ -1,6 +1,6 @@
 import { useReducer, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
 
 export default function App() {
   const [newGoal, setNewGoal] = useState("");
@@ -10,6 +10,7 @@ export default function App() {
   }
   const addNewGoal = () =>{
     setGoals([...goals, newGoal])
+    setNewGoal("")
   }
   return (
     <View style={styles.screen}>
@@ -25,13 +26,13 @@ export default function App() {
         color='black'
         onPress={addNewGoal}></Button>
       </View>
-      <View>
-        {goals.map((x)=>{
+      <ScrollView>
+        {goals.map((x,y)=>{
           return(
-            <Text>{x}</Text>
+            <Text style={styles.listStyle} key={y}>{x}</Text>
           )
         })}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -54,5 +55,13 @@ const styles = StyleSheet.create({
   button:{
     backgroundColor: "black",
     color: 'red'
+  },
+  listStyle:{
+    borderWidth: 1,
+    backgroundColor: "#ccd",
+    color:'black',
+    margin: 3,
+    padding: 8,
+    borderRadius: 3,
   }
 })

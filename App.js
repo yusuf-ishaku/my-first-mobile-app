@@ -1,10 +1,11 @@
 import { useReducer, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Modal, FlatList, TouchableNativeFeedback} from 'react-native';
 
 export default function App() {
   const [newGoal, setNewGoal] = useState("");
-  const [goals, setGoals] = useState([])
+  const [goals, setGoals] = useState([]);
+  const [modalv, setModalV] = useState(false)
   const enteredGoalHandler = (e) =>{
     setNewGoal(e)
   }
@@ -12,20 +13,30 @@ export default function App() {
     setGoals([...goals, newGoal])
     setNewGoal("")
   }
+  const deleteGoal = (goal) =>{
+    setGoals(goalss =>{
+      return goalss.filter((x, y) => y !== goal )
+    })
+  }
   return (
     <View style={styles.screen}>
-      <View style={styles.inputPart}>
-        <TextInput 
-        placeholder='New Task' 
-        style={styles.input}
-        onChangeText={enteredGoalHandler}
-        value = {newGoal}
-        />
-        <Button 
-        title='Add' 
-        color='black'
-        onPress={addNewGoal}></Button>
-      </View>
+      <Button title="Add New Goal" color="black" onPress={() =>{if(!modalv){setModalV(true)}else{setModalV(false)}}} ></Button>
+      <Modal visible={modalv} animationType="slide">
+        <View style={styles.inputPart}>
+          <TextInput 
+          placeholder='New Task' 
+          style={styles.input}
+          onChangeText={enteredGoalHandler}
+          value = {newGoal}
+          />
+          <Button 
+          title='Add' 
+          color='black'
+          onPress={addNewGoal}></Button>
+        </View>
+      </Modal>
+        
+      
       {/* <ScrollView>
         {goals.map((x,y)=>{
           return(
@@ -34,7 +45,11 @@ export default function App() {
         })}
       </ScrollView> */}
       <FlatList data={goals} renderItem={itemdata => (
-        <Text style={styles.listStyle} key={itemdata.index}>{itemdata.item}</Text>
+        <TouchableNativeFeedback>
+          <View>
+            <Text style={styles.listStyle} onPress={() =>{deleteGoal(itemdata.index)}} key={itemdata.index}>{itemdata.item}</Text>
+          </View>
+        </TouchableNativeFeedback>
       )}></FlatList>
     </View>
   );

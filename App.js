@@ -21,7 +21,7 @@ export default function App() {
   return (
     <View style={styles.screen}>
       <Button title="Add New Goal" color="black" onPress={() =>{if(!modalv){setModalV(true)}else{setModalV(false)}}} ></Button>
-      <Modal visible={modalv} animationType="slide">
+      <Modal  visible={modalv} animationType="slide">
         <View style={styles.inputPart}>
           <TextInput 
           placeholder='New Task' 
@@ -29,10 +29,14 @@ export default function App() {
           onChangeText={enteredGoalHandler}
           value = {newGoal}
           />
-          <Button 
-          title='Add' 
-          color='black'
-          onPress={addNewGoal}></Button>
+          <View style={styles.buttons}>
+            <Button title='Cancel' color="red" onPress={() =>{setModalV(false)}}></Button>
+            <Button 
+            title='Add' 
+            color='black'
+            onPress={addNewGoal}></Button>
+          </View>
+          
         </View>
       </Modal>
         
@@ -59,16 +63,23 @@ const styles = StyleSheet.create({
   screen:{
     padding: 30
   },
+  buttons:{
+    width: "50%",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
   inputPart:{
-    flexDirection: "row", 
-    justifyContent: 'space-between', 
+    flex: 1,
+    flexDirection: "column", 
+    justifyContent: 'center', 
     alignItems: 'center'
   },
   input:{
     borderColor: 'black',
     padding: 5,
     borderBottomWidth: 1,
-    width: '80%'
+    width: '80%',
+    marginBottom: 10
   },
   button:{
     backgroundColor: "black",
